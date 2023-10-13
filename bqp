@@ -1,0 +1,38 @@
+#!/bin/bash
+NC='\033[0m'
+GREEN='\033[0;32m'
+bqp_st='backup_a145f'
+sd0=/sdcard
+sd1=/storage/82E5-8925
+DIR_LOL=/dev/block/by-name
+bqp() {
+ clear
+ if [[ $1 == "-rm" ]]
+ then
+  rm -rf $sd1/${2}_${bqp_st}.img
+ else
+  if [[ -z $1 ]]
+  then
+   BKED_BNAME=(`ls $sd1 | grep $bqp_st | sed -e "s/_${bqp_st}.img//g"`)
+   echo "Backup Partitions (${DIR_LOL})"
+   echo -e "not backed up, ${GREEN}backed up${NC}";echo
+   ALL_BNAME=`su -c ls $DIR_LOL`
+   for i in ${BKED_BNAME[@]}; do
+   ALL_BNAME=`echo $ALL_BNAME | sed -e "s/\b${i}\b/\`printf \"\033[32m${i}\033[0m\"\`/"`
+   done
+   echo -e $ALL_BNAME; echo
+   read -p "enter partiton name to backup:" ban
+  else
+   ban=$1
+  fi
+  ban2=`su -c ls $sd1 | grep ${ban}_$bqp_st`
+  if [[ -z $ban2 ]]
+  then
+   ban3=$sd1/${ban}_${bqp_st}.img
+   su -c dd if=$DIR_LOL/$ban of=$ban3
+  else
+   echo file already exists
+  fi
+ fi
+}
+bqp
