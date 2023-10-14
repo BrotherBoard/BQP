@@ -4,4 +4,6 @@ tested on a super device
 in termux: put in ~/ and do ./bqp
 i use github as a free cloud to get my code on any device, u are welcome to use this too.
 
+or just put in yr bin folder (better, its supported)
+
 included in BombScripts
